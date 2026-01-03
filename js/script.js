@@ -205,10 +205,10 @@ filterButtons.forEach(button => {
             if (filterValue === 'all' || category === filterValue) {
                 card.style.display = 'block';
                 // Trigger reflow for animation
-                setTimeout(() => {
+                requestAnimationFrame(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 10);
+                });
             } else {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
@@ -397,11 +397,20 @@ window.addEventListener('load', () => {
 // ====================================
 
 const heroSection = document.querySelector('.hero');
+let parallaxTicking = false;
 
-window.addEventListener('scroll', () => {
+function updateParallax() {
     const scrolled = window.scrollY;
     if (heroSection && scrolled < window.innerHeight) {
         heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+    parallaxTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!parallaxTicking) {
+        requestAnimationFrame(updateParallax);
+        parallaxTicking = true;
     }
 });
 
@@ -457,7 +466,6 @@ buttons.forEach(button => {
 
 console.log('%c Welcome to My Portfolio! ', 'background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); color: white; font-size: 20px; font-weight: bold; padding: 10px;');
 console.log('%c Built with ❤️ using HTML, CSS & JavaScript', 'color: #6366f1; font-size: 14px;');
-console.log('%c GitHub: https://github.com/Nitto26', 'color: #94a3b8; font-size: 12px;');
 
 // ====================================
 // Performance Optimization
